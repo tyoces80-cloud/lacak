@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LACT ID - Lacak Lokasi (Prototype)</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111c33;
+      --text:#e8eefc;
+      --muted:#a9b4d0;
+      --accent:#6ea8fe;
+      --danger:#ff6b6b;
+      --ok:#2de07b;
+      --border:rgba(255,255,255,.10);
+      --shadow: 0 12px 35px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(110,168,254,.25), transparent 55%),
+                  radial-gradient(900px 650px at 80% 20%, rgba(45,224,123,.18), transparent 50%),
+                  var(--bg);
+      color:var(--text);
+    }
+    .wrap{max-width:1000px; margin:0 auto; padding:28px 18px 60px;}
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      margin-bottom:18px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .logo{
+      width:44px; height:44px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(110,168,254,.95), rgba(45,224,123,.8));
+      box-shadow: 0 10px 25px rgba(110,168,254,.18);
+    }
+    h1{font-size:18px; margin:0; letter-spacing:.2px}
+    .sub{color:var(--muted); font-size:13px; margin-top:4px}
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      margin-top:10px;
+    }
+    @media (max-width: 860px){ .grid{grid-template-columns: 1fr;} }
+
+    .card{
+      background: rgba(17,28,51,.72);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow: var(--shadow);
+      padding:16px;
+      overflow:hidden;
+    }
+    .card h2{margin:0 0 10px; font-size:14px; color:var(--muted); font-weight:600; letter-spacing:.2px}
+
+    label{display:block; font-size:13px; color:var(--muted); margin:12px 0 6px}
+    input, select{
+      width:100%; padding:10px 12px; border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      outline:none;
+    }
+    input::placeholder{color:rgba(232,238,252,.45)}
+
+    .row{display:flex; gap:10px; align-items:center;}
+    .row > *{flex:1}
+
+    button{
+      width:100%; padding:11px 12px; border:none;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(110,168,254,.95), rgba(110,168,254,.55));
+      color:#071021; font-weight:800; cursor:pointer;
+    }
+    button.secondary{
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      border:1px solid var(--border);
+      font-weight:700;
+    }
+    button:disabled{opacity:.55; cursor:not-allowed}
+
+    .status{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--border);
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+      min-height:46px;
+    }
+    .status b{color:var(--text)}
+    .status .ok{color:var(--ok); font-weight:800}
+    .status .danger{color:var(--danger); font-weight:800}
+
+    /* Map placeholder (no external libs) */
+    .map{
+      height:360px;
+      border-radius:16px;
+      border:1px dashed rgba(255,255,255,.18);
+      background:
+        linear-gradient(180deg, rgba(110,168,254,.07), rgba(0,0,0,.0)),
+        radial-gradient(800px 300px at 50% 0%, rgba(45,224,123,.12), transparent 55%),
+        rgba(0,0,0,.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .pin{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--border);
+      color:var(--text);
+    }
+
+    .pillbar{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .pill{
+      padding:7px 10px; border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .footer-note{margin-top:12px; font-size:12px; color:rgba(232,238,252,.65)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>LACT ID</h1>
+          <div class="sub">Prototype pelacakan lokasi dengan izin (perspektif perangkat pengguna)</div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="sub">Mode: <b>Demo tanpa backend</b></div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>1) Bagikan lokasi dari perangkat ini</h2>
+
+        <label for="deviceName">Nama perangkat/orang (untuk ditampilkan)</label>
+        <input id="deviceName" placeholder="mis. Andi (izin diperlukan)" />
+
+        <div class="row">
+          <div>
+            <label for="intervalSec">Kirim berkala (detik)</label>
+            <input id="intervalSec" type="number" min="5" step="1" value="10" />
+          </div>
+          <div>
+            <label for="lactId">LACT ID (buat sendiri)</label>
+            <input id="lactId" placeholder="mis. LACT123456" />
+          </div>
+        </div>
+
+        <button id="btnStart">Mulai kirim lokasi</button>
+        <button id="btnStop" class="secondary" style="margin-top:10px; display:none">Stop</button>
+
+        <div id="statusSend" class="status">Belum aktif.</div>
+        <div class="footer-note">Demo ini menyimpan data lokasi di <b>localStorage</b> milik browser. Untuk real-time lintas perangkat, dibutuhkan backend (mis. Firebase/Node) dan persetujuan eksplisit.</div>
+      </section>
+
+      <section class="card">
+        <h2>2) Tampilkan lokasi dari LACT ID</h2>
+
+        <label for="viewId">LACT ID yang mau dipantau</label>
+        <input id="viewId" placeholder="mis. LACT123456" />
+
+        <button id="btnFetch" class="secondary">Ambil data terakhir</button>
+
+        <div class="pillbar" id="metaBar"></div>
+
+        <div class="map" role="img" aria-label="Placeholder peta">
+          <div>
+            <div class="pin">
+              <span aria-hidden="true">📍</span>
+              <span id="coordText">Belum ada data</span>
+            </div>
+            <div style="margin-top:12px; color:rgba(232,238,252,.7); font-size:13px">
+              (Untuk peta interaktif bisa ditambahkan nanti: Leaflet/Mapbox.)
+            </div>
+          </div>
+        </div>
+
+        <div id="statusView" class="status">Silakan isi LACT ID.</div>
+      </section>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
+
